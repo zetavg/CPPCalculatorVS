@@ -11,6 +11,9 @@
 #include <climits>
 
 #include "Integer.h"
+#include "parser.h"
+
+#include <iostream>
 
 #define DECIMAL_APPROXIMATE_DENOMINATOR_MAX_DIGITS 100
 
@@ -23,7 +26,7 @@ Decimal::Decimal() {
 }
 
 Decimal::Decimal(const char *number) {
-	set_value(number);
+	copy_value_from(parse(number));
 }
 
 
@@ -109,9 +112,13 @@ std::string Decimal::get_value() const {
 		return "0";
 	}
 
+	std::string output;
+
+	if(!sign) output.push_back('-');
+
 	Integer rem(molecular);
 
-	std::string output = (rem / denominator).get_value();
+	output += (rem / denominator).get_value();
 	rem = rem % denominator;
 
 	if (!rem.zero()) {
@@ -159,7 +166,7 @@ bool Decimal::zero() const {
 */
 
 Decimal& Decimal::operator=(const char *number) {
-	set_value(number);
+	copy_value_from(parse(number));
 	return *this;
 }
 
@@ -193,15 +200,15 @@ Decimal operator+(Decimal &a, Decimal &b) {
 		// simply add the values and set the sign
 		Decimal result;
 		result.sign = a.sign;
-		result.molecular = a.molecular + b.molecular;
+		result.molecular = a_molecular_after_multiplication + b_molecular_after_multiplication;
 		result.denominator = result_denominator;
 		result.simplify();
 		return result;
 	}
 	else {
 		Decimal result;
-		result.sign = a.sign;
-		result.molecular = a.molecular - b.molecular;
+		result.sign = a_molecular_after_multiplication > b_molecular_after_multiplication ? a.sign : b.sign;
+		result.molecular = a_molecular_after_multiplication - b_molecular_after_multiplication;
 		result.denominator = result_denominator;
 		result.simplify();
 		return result;

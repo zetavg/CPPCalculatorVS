@@ -2,6 +2,8 @@
 
 #include "Integer.h"
 
+#include "parser.h"
+
 #include <string>
 #include <cstring>
 #include <iostream>
@@ -136,7 +138,8 @@ Integer::Integer() {
 }
 
 Integer::Integer(const char *number) {
-	set_value(number);
+	auto d = parse(number);
+	copy_value_from(d.molecular / d.denominator);
 }
 
 
@@ -211,7 +214,8 @@ bool Integer::zero() const {
 */
 
 Integer& Integer::operator=(const char *number) {
-	set_value(number);
+	auto d = parse(number);
+	copy_value_from(d.molecular / d.denominator);
 	return *this;
 }
 
@@ -337,7 +341,7 @@ Integer operator%(Integer &a, const Integer &b) {
 
 bool operator>(Integer &a, Integer &b) {
 	if (a.sign == b.sign) {
-		return (~a.sign) ^ compare_raw_value(a.value, b.value) == 1;
+		return (!a.sign) ^ (compare_raw_value(a.value, b.value) == 1);
 	}
 	else {
 		return a.sign;
@@ -347,7 +351,7 @@ bool operator>(Integer &a, Integer &b) {
 bool operator>=(Integer &a, Integer &b) {
 	int result = compare_raw_value(a.value, b.value);
 	if (a.sign == b.sign) {
-		return (result == 0) || (~a.sign) ^ result == 1;
+		return (result == 0) || (!a.sign) ^ result == 1;
 	}
 	else {
 		return a.sign;
