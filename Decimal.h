@@ -34,6 +34,8 @@ public:
 	friend bool operator<(Decimal &a, Decimal &b);
 	friend bool operator>(Decimal &a, Decimal &b);
 	friend Decimal operator/(Decimal &a, Decimal &b);
+	/* Functions */
+	Decimal factorial() const;
 
 	/* Private members */
 	bool sign;

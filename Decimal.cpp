@@ -116,6 +116,11 @@ std::string Decimal::get_value() const {
 
 	if(!sign) output.push_back('-');
 
+	if (denominator.get_value() == "1") {
+		output += molecular.get_value();
+		return output;
+	}
+
 	Integer rem(molecular);
 
 	output += (rem / denominator).get_value();
@@ -264,10 +269,35 @@ Decimal operator/(Decimal &a, Decimal &b) {
 	return result;
 }
 
+Decimal Decimal::factorial() const {
+	Decimal result;
+	Integer m = molecular, d = denominator;
+
+	if (!(m % d).zero() || !sign) {
+		result.set_value("null");
+		return result;
+	}
+
+	Integer i = m / d;
+	Integer one = "1";
+	Integer acc = "1";
+
+	while (!i.zero()) {
+		acc = i * acc;
+		i = i - one;
+	}
+
+	result.molecular = acc;
+	return result;
+}
+
 /*
 * Private methods
 */
 
 void Decimal::simplify() {
+	if (denominator.null() || denominator.zero()) {
+		set_value("null");
+	}
 	// TODO: Impl.
 }

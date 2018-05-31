@@ -306,6 +306,12 @@ Integer operator*(Integer &a, Integer &b) {
 }
 
 Integer operator/(Integer &a, const Integer &b) {
+	if (b.null() || b.zero()) {
+		Integer result;
+		result.set_value("null");
+		return result;
+	}
+
 	integer_value_t aValue(a.value), bValue(b.value);
 
 	integer_value_t oneValue;

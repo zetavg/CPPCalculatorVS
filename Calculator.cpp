@@ -18,6 +18,7 @@ void apiDemo();
 int main()
 {
 	// apiDemo();
+
 	string input;
 
 	while (getline(cin, input)) {
@@ -35,6 +36,10 @@ void apiDemo() {
 	Decimal d_2 = "0.3 * 3 + ((1 + 1) * 2)";
 	cout << i_2 << endl;
 	cout << d_2 << endl;
+	Integer i_3 = "1/0";
+	Decimal d_3 = "0";
+	cout << i_3 << endl;
+	cout << d_3 << endl;
 
 	cout << "Overriding operator <<, >>, +, -, *, /" << endl;
 	Integer i2 = "50";

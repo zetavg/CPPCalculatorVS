@@ -231,8 +231,7 @@ Decimal eval(std::vector<std::string> tokens, int start, int end) {
 	if (isFactorial(tokens.at(end)) && splitPointNW < 2) {
 		Decimal result;
 		result = eval(tokens, start, end - 1);
-		// TODO
-		return result;
+		return result.factorial();
 	}
 
 	// expr op expr
